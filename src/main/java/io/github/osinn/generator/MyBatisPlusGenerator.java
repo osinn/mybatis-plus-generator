@@ -24,10 +24,17 @@ public class MyBatisPlusGenerator {
 
         // 模块名称
         String moduleName = "integral";
+        String basePackage = "io.github.osinn";
         String dir = System.getProperty("user.dir");
+        // 过滤表前缀
+        List<String> addTablePrefix = Arrays.asList(
+                "tbl_",
+                "t_",
+                "c_"
+        );
 
         //1、配置数据源
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/shop_clover", "root", "123456")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/databases", "root", "123456")
                 //2、全局配置
                 .globalConfig(builder -> {
                     builder.author("wency_cai") // 设置作者名
@@ -37,7 +44,7 @@ public class MyBatisPlusGenerator {
                 })
                 //3、包配置
                 .packageConfig(builder -> {
-                    builder.parent("io.github.osinn") // 设置父包名
+                    builder.parent(basePackage) // 设置父包名
                             .moduleName(moduleName)   //设置模块包名
                             .entity("entity")   //pojo 实体类包名
                             .service("service") //Service 包名
@@ -51,7 +58,7 @@ public class MyBatisPlusGenerator {
                 //4、策略配置 tinyint
                 .strategyConfig(builder -> {
                     builder.addInclude(table) // 设置需要生成的数据表名
-                            .addTablePrefix("tbl_", "t_", "c_") // 设置过滤表前缀
+                            .addTablePrefix(addTablePrefix) // 设置过滤表前缀
                             //4.1、Mapper策略配置
                             .mapperBuilder()
                             .superClass(BaseMapper.class)   //设置父类
